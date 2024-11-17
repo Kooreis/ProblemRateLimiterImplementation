@@ -1,14 +1,17 @@
-using System;
-using System.Collections.Generic;
-
-public class RateLimiter
-{
-    private int _requestsPerSecond;
-    private Queue<DateTime> _requests;
-
-    public RateLimiter(int requestsPerSecond)
+public bool ShouldAllowRequest()
     {
-        _requestsPerSecond = requestsPerSecond;
-        _requests = new Queue<DateTime>(requestsPerSecond);
+        while (_requests.Count > 0 && (DateTime.Now - _requests.Peek()).TotalSeconds > 1)
+        {
+            _requests.Dequeue();
+        }
+
+        if (_requests.Count < _requestsPerSecond)
+        {
+            _requests.Enqueue(DateTime.Now);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-}
