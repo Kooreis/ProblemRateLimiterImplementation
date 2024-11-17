@@ -1,4 +1,4 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+public class RateLimiter {
+    private final ScheduledExecutorService scheduler;
+    private final AtomicInteger counter = new AtomicInteger(0);
+    private static final int MAX_REQUESTS_PER_SECOND = 5;
